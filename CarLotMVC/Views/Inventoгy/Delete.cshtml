@@ -1,0 +1,67 @@
+﻿@model AutoLotDALModels.Models.Inventory
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+@*Необходимо также изменить шаблонное представление Delete. Первым делом удалим поле Timestamp, которое имеет мало смысла
+    для пользователя (и потенциально запутывает). Кроме того, представление Delete не создает каких-либо складских записей;
+    при ссылке на запись, подлежащую удалению, оно полагается целиком на параметры URL.*@
+
+@*Приложения MVC имеют два уровня проверки достоверности: на серверной стороне
+    и на клиентской стороне. Проверка достоверности серверной стороны осуществлялась
+    ранее в главе, когда производилось добавление ошибок в ModelState как дополнение
+    к ошибкам, которые возникали в процессе привязки модели. Проверка достоверности
+    клиентской стороны реализуется с помощью JavaScript, как вскоре будет показано.*@
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Inventory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Make)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Make)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PetName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PetName)
+        </dd>
+        @Html.ValidationMessageFor(model => model.Make, "", new { @class = "text-danger" })
+
+    </dl>
+    @*Модифицируем код формы, как показано ниже, чтобы передать обязательные значения,
+        которые сделают возможным удаление складской записи*@
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.Timestamp)
+        /*Ошибки ModelState отображаются в пользовательском интерфейсе посредством вспомогательных методов HTML с 
+        названиями ValidationMessageFor() и ValidationSummary(). Метод ValidationSummary() будет показывать ошибки 
+        ModelState, не связанные со свойствами, а также ошибки, которые относятся к свойствам (при условии, что свойство 
+        ValidationSummary.ExcludePropertyErrors установлено в false). Обычно ошибки, связанные со свойствами, отображаются 
+        рядом со свойствами, а с применением метода ValidationSummary() выводятся только ошибки, 
+        не имеющие отношения к свойствам.*/
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

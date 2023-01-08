@@ -1,0 +1,51 @@
+﻿@model AutoLotDALModels.Models.Inventory
+@*Объекты ViewBag, ViewData и TempData — это механизмы для отправки небольших
+    объемов данных представлению. Примером может служить строка в начале каждого
+    представления Inventory, устанавливающая свойство ViewBag.Title; вот как она выглядит в представлении*@
+@{
+    ViewBag.Title = "Edit";
+}
+@*Свойство ViewBag. Title применяется для отправки заголовка представления компоновке с целью использования
+    в следующей строке внутри Layout. cshtml
+
+    Таблица 29.10. Способы передачи данных представлению
+    Объект транспортировки данных                           Описание
+    TempData                                                Недолговечный объект, который работает только во время
+                                                            текущего запроса и запроса, следующего за ним
+
+    ViewData                                                Словарь, позволяющий хранить данные в парах “имя-значение”,
+                                                            например, ViewData["Title"] ="Foo"
+
+    ViewBag                                                 Динамическая оболочка для словаря ViewData, например,
+                                                            ViewBag.Title = "Foo"
+
+
+*@
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(Model => Model.Id)
+    @Html.HiddenFor(Model => Model.Timestamp)
+    @Html.EditorForModel()
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+
+        </div>
+
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@*Для визуализации области в представлении используется блок Razor под названием @section. Например, следующие блоки кода
+    внутри страницы Edit.cshtml, находящейся в папке Views/Inventory, добавляют к визуализируемой странице пакет
+    проверки достоверности jQuery*@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
